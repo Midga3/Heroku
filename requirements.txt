@@ -1,5 +1,5 @@
 heroku-tl-new==1.1.0
 pycloudflared==0.2.0
 Pillow
-
+tgcalls
 # Python 3.9+
