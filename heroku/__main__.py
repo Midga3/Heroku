@@ -18,7 +18,7 @@ import subprocess
 import sys
 import hashlib
 
-from heroku_internal import restart
+from ._internal import restart
 
 def get_file_hash(filename):
     hasher = hashlib.sha256()
