@@ -3,5 +3,6 @@ pycloudflared==0.2.0
 Pillow
 subprocess
 sys
+pip==25.2
 
 # Python 3.9+
