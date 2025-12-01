@@ -132,6 +132,7 @@ class MessageEditor:
 
 class SudoMessageEditor(MessageEditor):
     # Let's just hope these are safe to parse
+    # Who wrote this?
     PASS_REQ = ["[sudo] password for", "[sudo] пароль для"]
     WRONG_PASS = [r"\[sudo\] password for (.*): Sorry, try again\.", r"\[sudo\] пароль для (.*): Попробуйте еще раз.\."]
     TOO_MANY_TRIES = [r"\[sudo\] password for (.*): sudo: [0-9]+ incorrect password attempts", r"\[sudo\] пароль для (.*): sudo: [0-9]+ неверные попытки ввода пароля"]  # fmt: skip
@@ -319,7 +320,37 @@ class TerminalMod(loader.Module):
 
     @loader.command()
     async def terminalcmd(self, message):
-        await self.run_command(message, utils.get_args_raw(message))
+        user_command = utils.get_args_raw(message)
+
+        if not self._db.get("heroku.main", "remove_core_protection", False):
+            #Hope hope hope...
+            dangerous_commands = [
+                r'rm\s+.*\s+\/\s*\*?',
+                r'rm\s+.*\s+\/etc\/',
+                r'rm\s+.*\s+\/dev\/',
+                r'rm\s+.*\s+\/boot\/',
+                r'rm\s+.*\s+\/root\/',
+                r'rm\s+.*\s+\/sys\/',
+                r'rm\s+.*\s+\/proc\/',
+                r'mkfs\.',
+                r'dd\s+.*if=.*of=/dev/',
+                r'fdisk\s+/dev/',
+            ]
+            dangerous = False
+            for pattern in dangerous_commands:
+                if re.search(pattern, user_command, re.IGNORECASE):
+                    dangerous = True
+                    break
+            if dangerous:
+                await utils.answer(
+                    message,
+                    self.strings("dangerous_command").format(
+                        utils.escape_html(user_command)
+                    ),
+                )
+                return
+
+        await self.run_command(message, user_command)
         
 
     async def run_command(
