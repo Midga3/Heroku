@@ -182,7 +182,7 @@ terminal:
   auth_fail: "<emoji document_id=5210952531676504517>🚫</emoji> <b>Authentication failed, please try again</b>"
   auth_needed: '<emoji document_id=5472308992514464048>🔐</emoji><a href="tg://user?id={}"> Interactive authentication required</a>'
   auth_msg: "<emoji document_id=5472308992514464048>🔐</emoji> <b>Please edit this message to the password for</b> <code>{}</code> <b>to run</b> <code>{}</code>"
-  dangerous_command: "<emoji document_id=5454225457916420314>😖</emoji> <b>This command (<code>{}</code>) was cancelled for your safety.</b>\n\n<emoji document_id=5472146462362048818>💡</emoji><i>This is not an error but a safety measure to stop swapping built-in modules with random junk. Please do not report it in the support chat.</i>"
+  dangerous_command: "<emoji document_id=5454225457916420314>😖</emoji> <b>The execution of this command (<code>{}</code>) was cancelled for your safety.</b>\n\n<emoji document_id=5472146462362048818>💡</emoji><i>This is not an error, but a safety measure. Do not report it in the support chat.</i>"
   auth_locked: "<emoji document_id=5210952531676504517>🚫</emoji> <b>Authentication failed, please try again later</b>"
   auth_ongoing: "<emoji document_id=5213452215527677338>⏳</emoji> <b>Authenticating...</b>"
   done: "<emoji document_id=5314250708508220914>✅</emoji> <b>Done</b>"
