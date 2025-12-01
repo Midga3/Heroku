@@ -322,33 +322,31 @@ class TerminalMod(loader.Module):
     async def terminalcmd(self, message):
         user_command = utils.get_args_raw(message)
 
-        if not self._db.get("heroku.main", "remove_core_protection", False):
-            #Hope hope hope...
-            dangerous_commands = [
-                r'rm\s+.*\s+\/\s*\*?',
-                r'rm\s+.*\s+\/etc\/',
-                r'rm\s+.*\s+\/dev\/',
-                r'rm\s+.*\s+\/boot\/',
-                r'rm\s+.*\s+\/root\/',
-                r'rm\s+.*\s+\/sys\/',
-                r'rm\s+.*\s+\/proc\/',
-                r'mkfs\.',
-                r'dd\s+.*if=.*of=/dev/',
-                r'fdisk\s+/dev/',
-            ]
-            dangerous = False
-            for pattern in dangerous_commands:
-                if re.search(pattern, user_command, re.IGNORECASE):
-                    dangerous = True
-                    break
-            if dangerous:
-                await utils.answer(
-                    message,
-                    self.strings("dangerous_command").format(
-                        utils.escape_html(user_command)
-                    ),
-                )
-                return
+        dangerous_commands = [
+            r'rm\s+.*\s+\/\s*\*?',
+            r'rm\s+.*\s+\/etc\/',
+            r'rm\s+.*\s+\/dev\/',
+            r'rm\s+.*\s+\/boot\/',
+            r'rm\s+.*\s+\/root\/',
+            r'rm\s+.*\s+\/sys\/',
+            r'rm\s+.*\s+\/proc\/',
+            r'mkfs\.',
+            r'dd\s+.*if=.*of=/dev/',
+            r'fdisk\s+/dev/',
+        ]
+        dangerous = False
+        for pattern in dangerous_commands:
+            if re.search(pattern, user_command, re.IGNORECASE):
+                dangerous = True
+                break
+        if dangerous:
+            await utils.answer(
+                message,
+                self.strings("dangerous_command").format(
+                    utils.escape_html(user_command)
+                ),
+            )
+            return
 
         await self.run_command(message, user_command)
         
