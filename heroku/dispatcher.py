@@ -358,7 +358,7 @@ class CommandDispatcher:
         ):
             return False
 
-        if not message.message or len(message.message) == len(prefix):
+        if not message.message or len(message.message.strip()) == len(prefix):
             return False  # Message is just the prefix
 
 
