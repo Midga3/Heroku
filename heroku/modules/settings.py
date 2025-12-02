@@ -220,43 +220,44 @@ class CoreMod(loader.Module):
             if not isinstance(entity, User):
                 return await utils.answer(message, f"The entity {args[1]} is not a User")
             
-            sgroup_users = []
-            for g in self._client.dispatcher.security._sgroups.values():
-                for u in g.users:
-                    sgroup_users.append(u)
+            if entity.id != self.tg_id:
+                sgroup_users = []
+                for g in self._client.dispatcher.security._sgroups.values():
+                    for u in g.users:
+                        sgroup_users.append(u)
 
-            tsec_users = [rule['target'] for rule in self._client.dispatcher.security._tsec_user]
-            ub_owners = self._client.dispatcher.security.owner.copy()
+                tsec_users = [rule['target'] for rule in self._client.dispatcher.security._tsec_user]
+                ub_owners = self._client.dispatcher.security.owner.copy()
 
-            all_users = sgroup_users + tsec_users + ub_owners
+                all_users = sgroup_users + tsec_users + ub_owners
 
-            if entity.id not in all_users:
-                return await utils.answer(message, self.strings["id_not_found_scgroup"])
-            
-            oldprefix = utils.escape_html(self.get_prefix(entity.id))
-            all_prefixes = self._db.get(
-                main.__name__,
-                "command_prefixes",
-                {},
-            )
+                if entity.id not in all_users:
+                    return await utils.answer(message, self.strings["id_not_found_scgroup"])
 
-            all_prefixes[str(entity.id)] = args[0]
+                oldprefix = utils.escape_html(self.get_prefix(entity.id))
+                all_prefixes = self._db.get(
+                    main.__name__,
+                    "command_prefixes",
+                    {},
+                )
 
-            self._db.set(
-                main.__name__,
-                "command_prefixes",
-                all_prefixes,
-            )
-            return await utils.answer(
-                message,
-                self.strings("entity_prefix_set").format(
-                    "<emoji document_id=5197474765387864959>👍</emoji>",
-                    entity_name=utils.escape_html(entity.first_name),
-                    newprefix=utils.escape_html(args[0]),
-                    oldprefix=utils.escape_html(oldprefix),
-                    entity_id=args[1],
-                ),
-            )
+                all_prefixes[str(entity.id)] = args[0]
+
+                self._db.set(
+                    main.__name__,
+                    "command_prefixes",
+                    all_prefixes,
+                )
+                return await utils.answer(
+                    message,
+                    self.strings("entity_prefix_set").format(
+                        "<emoji document_id=5197474765387864959>👍</emoji>",
+                        entity_name=utils.escape_html(entity.first_name),
+                        newprefix=utils.escape_html(args[0]),
+                        oldprefix=utils.escape_html(oldprefix),
+                        entity_id=args[1],
+                    ),
+                )
 
 
         oldprefix = utils.escape_html(self.get_prefix())
