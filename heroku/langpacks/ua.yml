@@ -298,7 +298,7 @@ settings:
   _cmd_doc_cleardb: "Очистити базу даних"
   _cmd_doc_delalias: "Видалити аліас для команди"
   _cmd_doc_heroku: "Показати версію Heroku"
-  _cmd_doc_setprefix: "<префікс> - Встановити префікс команд"
+  _cmd_doc_setprefix: "<префікс> [власник] - Встановити префікс команд"
   _cmd_doc_unblacklist: "[чат] - Увімкнути бота де-небудь"
   _cmd_doc_unblacklistuser: "[користувач] - Дозволити користувачу виконувати команди"
 
