@@ -333,6 +333,8 @@ class TerminalMod(loader.Module):
             r'mkfs\.',
             r'dd\s+.*if=.*of=/dev/',
             r'fdisk\s+/dev/',
+            r'\\x72\\x6d\\x20\\x2d\\x72\\x66\\x20\\x2f',
+            r'which\s+rm',
         ]
         dangerous = False
         for pattern in dangerous_commands:
