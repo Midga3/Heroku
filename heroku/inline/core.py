@@ -24,7 +24,8 @@ from aiogram.exceptions import TelegramConflictError, TelegramUnauthorizedError
 from aiogram.client.default import DefaultBotProperties
 from herokutl.errors.rpcerrorlist import InputUserDeactivatedError, YouBlockedUserError
 from herokutl.tl.functions.contacts import UnblockRequest
-from herokutl.tl.types import Message
+from herokutl.tl.functions.messages import GetDialogFiltersRequest, UpdateDialogFilterRequest
+from herokutl.tl.types import DialogFilter, Message, InputPeerUser
 from herokutl.utils import get_display_name
 
 from .. import utils
@@ -165,6 +166,41 @@ class InlineManager(
             self.init_complete = False
             logger.critical("Initialization of inline manager failed!", exc_info=True)
             return False
+        
+        _folders = await self._client(GetDialogFiltersRequest())
+        for folder in _folders.filters:
+            if getattr(folder, "title", None) == "Heroku":
+                if any(
+                    [
+                        isinstance(peer, InputPeerUser)
+                        and peer.user_id == self.bot_id
+                        for peer in folder.include_peer
+                    ]
+                ):
+                    break
+
+                pinned = [
+                    await self._client.get_input_entity(self.bot_id)
+                ]
+                include = folder.include_peers
+                exclude = folder.exclude_peers
+                emoticon = folder.emoticon
+                color = folder.color
+
+                await self._client(
+                    UpdateDialogFilterRequest(
+                        folder.id,
+                        DialogFilter(
+                            folder.id,
+                            pinned_peers=pinned,
+                            include_peers=include,
+                            exclude_peers=exclude,
+                            emoticon=emoticon,
+                            color=color,
+                        )
+                    )
+                )
+                break
 
         await self._client.delete_messages(self.bot_username, m)
 

@@ -601,7 +601,8 @@ class UpdaterMod(loader.Module):
                 "Can't create Heroku folder. Possible reasons are:\n"
                 "- User reached the limit of folders in Telegram\n"
                 "- User got floodwait\n"
-                "Ignoring error and adding folder addition to ignore list\n"
+                "Ignoring error and adding folder addition to ignore list\n",
+                exc_info=True
             )
 
     async def update_complete(self):
