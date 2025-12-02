@@ -284,13 +284,13 @@ async def asset_channel(
         await client(SetHistoryTTLRequest(peer=peer, period=ttl))
 
     if _folder:
-        if _folder != "heroku":
+        if _folder.lower() != "heroku":
             raise NotImplementedError
 
         folders = await client(GetDialogFiltersRequest())
 
         try:
-            folder = next(folder for folder in folders if folder.title == "heroku")
+            folder = next(folder for folder in folders if folder.title.lower() == "heroku")
         except Exception:
             folder = None
 
