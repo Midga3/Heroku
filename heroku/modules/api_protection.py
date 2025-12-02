@@ -22,6 +22,7 @@ from herokutl.tl import functions
 from herokutl.tl.tlobject import TLRequest
 from herokutl.tl.types import Message
 from herokutl.utils import is_list_like
+from aiogram.types import BufferedInputFile
 
 from .. import loader, utils
 from ..inline.types import InlineCall
@@ -153,13 +154,13 @@ class APIRatelimiterMod(loader.Module):
                         and not self._lock
                     ):
                         self._lock = True
-                        report = io.BytesIO(
+                        report_bytes = io.BytesIO(
                             json.dumps(
                                 self._ratelimiter,
                                 indent=4,
                             ).encode()
                         )
-                        report.name = "local_fw_report.json"
+                        report = BufferedInputFile(report_bytes, "local_fw_report.json")
 
                         await self.inline.bot.send_document(
                             self.tg_id,
