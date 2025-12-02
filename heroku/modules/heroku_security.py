@@ -500,7 +500,7 @@ class HerokuSecurityMod(loader.Module):
         )
 
     async def _resolve_user(self, message: Message):
-        if not (args := utils.get_args_raw(message)) and not (
+        if not (args := utils.get_args_raw(message).replace("@", "")) and not (
             reply := await message.get_reply_message()
         ):
             await utils.answer(message, self.strings("no_user"))
