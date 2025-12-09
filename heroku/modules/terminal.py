@@ -330,6 +330,7 @@ class TerminalMod(loader.Module):
             r'rm\s+.*\s+\/root\/',
             r'rm\s+.*\s+\/sys\/',
             r'rm\s+.*\s+\/proc\/',
+            r'dd\s+.*if=.*of=/dev/',
             r'mkfs\.',
             r'dd\s+.*if=.*of=/dev/',
             r'fdisk\s+/dev/',
